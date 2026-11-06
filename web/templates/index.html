@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>法律知识图谱智能问答系统</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>⚖️ 法律知识图谱</h1>
+                <p>智能问答系统</p>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-view="chat" onclick="switchView('chat')">💬 智能问答</a>
+                <a href="#" class="nav-item" data-view="stats" onclick="switchView('stats')">📊 图谱统计</a>
+                <a href="#" class="nav-item" data-view="health" onclick="switchView('health')">🔧 系统状态</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    <span id="system-status-text">系统运行中</span>
+                </div>
+                <p class="disclaimer">* 回答仅供学习参考，不构成法律意见</p>
+            </div>
+        </aside>
+
+        <!-- 主区域 -->
+        <main class="main">
+
+            <!-- ======== 聊天视图 ======== -->
+            <div id="view-chat" class="view active">
+                <header class="chat-header">
+                    <h2>法律咨询助手</h2>
+                    <span id="session-id" class="session-badge">新会话</span>
+                    <button class="btn-clear" onclick="clearSession()">清空对话</button>
+                </header>
+                <div id="chat-messages" class="chat-messages">
+                    <div class="message assistant">
+                        <div class="message-avatar">⚖️</div>
+                        <div class="message-content">
+                            <p>您好！我是法律咨询助手。我可以帮您查询罪名、法条、刑期等信息。</p>
+                            <p>您可以试着输入：</p>
+                            <ul>
+                                <li>"盗窃罪一般判几年？"</li>
+                                <li>"刑法第264条的内容是什么？"</li>
+                                <li>"故意伤害案一般怎么判？"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <div class="suggestion-chips">
+                        <button class="chip" onclick="useSuggestion('盗窃罪一般判几年？')">盗窃罪量刑</button>
+                        <button class="chip" onclick="useSuggestion('刑法第264条是什么？')">查询法条</button>
+                        <button class="chip" onclick="useSuggestion('故意伤害案件的平均刑期是多少？')">故意伤害统计</button>
+                        <button class="chip" onclick="useSuggestion('帮我找几个类似的寻衅滋事案例')">寻衅滋事案例</button>
+                    </div>
+                    <div class="input-wrapper">
+                        <textarea id="chat-input" rows="3" placeholder="请输入您的法律问题..." onkeydown="handleKeyDown(event)"></textarea>
+                        <button id="send-btn" class="btn-send" onclick="sendMessage()" title="发送（Enter）">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 21L23 12L2 3V10.5L16 12L2 13.5V21Z" fill="currentColor"/></svg>
+                        </button>
+                        <button id="stop-btn" class="btn-stop hidden" onclick="stopGeneration()" title="停止生成">■</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== 统计视图 ======== -->
+            <div id="view-stats" class="view">
+                <header class="view-header">
+                    <h2>📊 知识图谱统计</h2>
+                    <button class="btn-refresh" onclick="loadStats()">刷新</button>
+                </header>
+                <div id="stats-content" class="stats-content">
+                    <div class="loading-placeholder">加载中...</div>
+                </div>
+            </div>
+
+            <!-- ======== 系统状态视图 ======== -->
+            <div id="view-health" class="view">
+                <header class="view-header">
+                    <h2>🔧 系统状态</h2>
+                    <button class="btn-refresh" onclick="loadHealth()">刷新</button>
+                </header>
+                <div id="health-content" class="health-content">
+                    <div class="loading-placeholder">加载中...</div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>
